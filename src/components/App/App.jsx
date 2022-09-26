@@ -13,11 +13,35 @@ const defaultContacts = [
   { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
 ];
 
+const LS_CONTACTS_KEY = 'contacts';
+
 export class App extends Component {
   state = {
     contacts: defaultContacts,
     filter: '',
   };
+
+  componentDidMount() {
+    try {
+      const savedContacts = JSON.parse(localStorage.getItem(LS_CONTACTS_KEY));
+      if (savedContacts?.length > 0) {
+        this.setState({ contacts: savedContacts });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { contacts } = this.state;
+    if (contacts !== prevState.contacts) {
+      try {
+        localStorage.setItem(LS_CONTACTS_KEY, JSON.stringify(contacts));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
 
   hasContact = ({ name }) =>
     this.state.contacts.find(item => item.name === name);
