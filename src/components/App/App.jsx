@@ -22,24 +22,16 @@ export class App extends Component {
   };
 
   componentDidMount() {
-    try {
-      const savedContacts = JSON.parse(localStorage.getItem(LS_CONTACTS_KEY));
-      if (savedContacts?.length > 0) {
-        this.setState({ contacts: savedContacts });
-      }
-    } catch (error) {
-      console.log(error);
+    const savedContacts = JSON.parse(localStorage.getItem(LS_CONTACTS_KEY));
+    if (savedContacts?.length > 0) {
+      this.setState({ contacts: savedContacts });
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { contacts } = this.state;
     if (contacts !== prevState.contacts) {
-      try {
-        localStorage.setItem(LS_CONTACTS_KEY, JSON.stringify(contacts));
-      } catch (error) {
-        console.log(error);
-      }
+      localStorage.setItem(LS_CONTACTS_KEY, JSON.stringify(contacts));
     }
   }
 
